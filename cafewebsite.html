@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Our Restaurant</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="cafestyle.css">
+    <script type="importmap">
+        {
+          "imports": {
+            "vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
+          }
+        }
+    </script>
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1 class="restaurant-title">{{ restaurantName }}</h1>
+        </header>
+        <section>
+            <div class="menu">
+                <h2>Our Menu</h2>
+                <ul>
+                    <li v-for="dish in menuItems">
+                        {{ dish.name }} - ${{ dish.price }}
+                    </li>
+                    <li v-else>Our menu is currently being updated. Check back later!</li>
+                </ul>
+            </div>
+            <div class="reservation">
+                <h2>Make a Reservation</h2>
+                <input v-model="reservationName" type="text" placeholder="Your Name">
+                <button class="button" @click="makeReservation" v-if="reservationName">Reserve a Table</button>
+                <p v-else>Please enter your name to reserve a table.</p>
+            </div>
+        </section>
+        <section class="specials">
+            <h2 v-show="showSpecials">Today's Specials</h2>
+            <ul>
+                <li v-for="special in dailySpecials">
+                    {{ special.name }} - {{ special.description }}
+                </li>
+                <li v-else>Sorry, no specials available today. Check back tomorrow!</li>
+            </ul>
+            <button class="button" @click="toggleSpecials">{{ showSpecials ? 'Hide Specials' : 'Show Specials' }}</button>
+        </section>
+    </div>
+
+    <script type="module">
+        import { createApp } from 'vue'
+
+        createApp({
+            data() {
+                return {
+                    restaurantName: 'Delicious Dining',
+                    menuItems: [
+                        { name: 'Spaghetti Bolognese', price: 12.99 },
+                        { name: 'Margherita Pizza', price: 10.99 },
+                        { name: 'Caesar Salad', price: 8.99 },
+                    ],
+                    reservationName: '',
+                    dailySpecials: [
+                        { name: 'Grilled Salmon', description: 'With lemon butter sauce' },
+                        { name: 'Vegetable Stir-Fry', description: 'Fresh vegetables with tofu' },
+                    ],
+                    showSpecials: false,
+                }
+            },
+            methods: {
+                makeReservation() {
+                    alert(`Thank you, ${this.reservationName}! Your table has been reserved.`);
+                },
+                toggleSpecials() {
+                    this.showSpecials = !this.showSpecials;
+                },
+            },
+        }).mount("#app");
+    </script>
+</body>
+</html>

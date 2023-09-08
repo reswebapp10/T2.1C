@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My University ToDo List</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    
+    <script type="importmap">
+        {
+          "imports": {
+            "vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
+          }
+        }
+    </script>
+    
+    <style>
+        
+        body {
+            background-image: url('https://img.freepik.com/free-vector/student-campus-flat-composition-with-university-building-background-vector-illustration_1284-81556.jpg?w=2000');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #061625;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        section {
+            text-align: center;
+            border: 2px solid #571a91;
+            width: 400px;
+            height: 600px;
+            padding: 15px;
+            border-radius: 20px;
+            background-color: rgba(184, 230, 241, 0.9);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            overflow-y: scroll;
+        }
+
+        .done {
+            text-decoration: line-through;
+            color: #371041;
+        }
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            border-bottom: 1px solid #8f9ad8;
+        }
+
+        input[type="text"] {
+            width: 70%;
+            padding: 10px;
+            border: 1px solid #8e4b91;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .button {
+            padding: 10px 15px;
+            background-color: #150a3b;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #9b3c70;
+        }
+
+        .buttonx {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #e74c3c;
+        }
+
+        /* Add styles for the student information */
+        .student-info {
+            text-align: left;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Add styles for the student image */
+        .student-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 10px auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="container">
+            <section>
+                <h1>My University ToDo List</h1>
+                
+                <!-- Student Information -->
+                <div class="student-info">
+                    <img src="https://img.freepik.com/premium-vector/happy-graduating-students-university-flat-color-vector-illustration_151150-9857.jpg?w=360" alt="Student" class="student-image">
+                    <p><strong>Student Name:</strong>Manumi Henagamage</p>
+                    <p><strong>Degree:</strong>Bachelor of IT</p>
+                    <p><strong>University:</strong>Deakin University</p>
+                    <p><strong>Current Trimester:</strong>2023 T2</p>
+                    <p><strong>Date:</strong> September 5, 2023</p>
+                </div>
+                
+                <form @submit.prevent="addTodo">
+                    <input v-model="newTodo" type="text" placeholder="Add a new task...">
+                    <button class="button">Add</button>
+                </form>
+                <ul>
+                    <li v-for="todo in todos" :key="todo.id">
+                        <input type="checkbox" v-model="todo.done">
+                        <span :class="{ done: todo.done }">{{ todo.text }}</span>
+                        <button class="buttonx" @click="removeTodo(todo)">Remove</button>
+                    </li>
+                </ul>
+            </section>
+        </div>
+    </div>
+
+    <script type="module">
+        import { createApp } from 'vue'
+
+        let id = 0
+
+        createApp({
+            data() {
+                return {
+                    newTodo: "",
+                    todos: [],
+                }
+            },
+            methods: {
+                addTodo() {
+                    if (this.newTodo.trim() !== "") {
+                        this.todos.push({ 
+                            id: id++,
+                            text: this.newTodo,
+                            done: false,
+                        });
+                        this.newTodo = '';
+                    }
+                },
+                removeTodo(todo) {
+                    const index = this.todos.indexOf(todo);
+                    if (index !== -1) {
+                        this.todos.splice(index, 1);
+                    }
+                },
+            }
+        }).mount('#app')
+    </script>
+</body>
+</html>
